@@ -1,0 +1,16 @@
+# Python env & cache
+.venv/
+__pycache__/
+
+# Numerai and other datasets
+data/
+*.parquet
+
+# Model artefacts
+models/
+*.pkl
+
+# OS / editor
+.DS_Store
+.idea/
+
