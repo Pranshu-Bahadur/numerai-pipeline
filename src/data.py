@@ -13,5 +13,5 @@ def download_data(cache_dir: Path | str = DATA_DIR, file_name: str = 'train') ->
 
     api = numerapi.NumerAPI()
     print(f"[data] downloading → {dest}")
-    api.download_dataset(f"{DATA_VERSION}/{file_name}.parquet", dest)
+    api.download_dataset(f"{DATA_VERSION}/{file_name}.parquet", str(dest))
     return dest
