@@ -20,15 +20,14 @@ Lean, reproducible pipeline that
 ├─ src/
 │   ├─ data.py               # download parquet + feature sets
 │   ├─ trainer.py            # trains xgb\_A / xgb\_B
-│   ├─ make\_model\_pickle.py  # wraps & cloud-pickles predict()
+│   ├─ inference.py  # wraps & cloud-pickles predict()
 │   └─ **init**.py
 ├─ configs/                  # hyper-param JSONs
 ├─ models/   (generated)     # trained XGB pickles
 ├─ preds/    (generated)     # model\_xgb\_A.pkl / model\_xgb\_B.pkl
 ├─ tests/                    # mocked fast unit tests
 └─ .github/workflows/
-├─ ci.yml                # push/PR – fast tests only
-└─ nightly.yml           # daily retrain → pickle → upload artifact
+	├─ ci.yml                # push/PR – fast tests only
 
 ````
 
@@ -46,23 +45,12 @@ pip install -r requirements.txt
 python -m src.trainer
 
 # build Numerai-compatible pickles
-python -m src.make_model_pickle     # outputs preds/model_xgb_*.pkl
+python -m src.inference.py     # outputs preds/model_xgb_*.pkl
 ````
 
 ---
 
-## 3 GitHub Actions
-
-| Workflow        | Trigger                                       | Steps                                                                |
-| --------------- | --------------------------------------------- | -------------------------------------------------------------------- |
-| **ci.yml**      | `push`, `pull_request`                        | installs deps → runs mocked unit tests (≈ 7 s)                       |
-| **nightly.yml** | 02 : 30 UTC daily **&** “Run workflow” button | tests → train → build pickles → **upload artifact `numerai-models`** |
-
-Open the run → *Artifacts* → download `numerai-models.zip`.
-
----
-
-## 4 Uploading the models to Numerai
+## 3 Uploading the models to Numerai
 
 1. Unzip `numerai-models.zip` – you’ll get
    `model_xgb_A.pkl`, `model_xgb_B.pkl`.
@@ -74,7 +62,7 @@ Open the run → *Artifacts* → download `numerai-models.zip`.
 
 ---
 
-## 5 Config knobs
+## 4 Config knobs
 
 | Field in `configs/xgb_*.json` | Meaning                                    |
 | ----------------------------- | ------------------------------------------ |
