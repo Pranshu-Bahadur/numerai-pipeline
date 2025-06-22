@@ -8,7 +8,7 @@ def download_data(cache_dir: Path | str = DATA_DIR, version: str = 'v5.0', file_
     """Download Numerai parquet once, then reuse from cache."""
     cache_dir = Path(cache_dir)
     cache_dir.mkdir(exist_ok=True)
-    dest = cache_dir / file_name
+    dest = cache_dir / f"{file_name}.parquet"
 
     if dest.exists():
         return dest
