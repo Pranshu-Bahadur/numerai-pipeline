@@ -1,4 +1,4 @@
-from src.inference import build_predict_fn
+ifrom src.inference import build_predict_fn
 import pandas as pd, numpy as np, joblib, tempfile, cloudpickle, gzip
 
 
@@ -17,4 +17,3 @@ def test_predict_signature(tmp_path):
     live = pd.DataFrame(np.ones((5, 3)), columns=feats)
     out = fn(live, pd.DataFrame())
     assert list(out.columns) == ["prediction"] and len(out) == 5
-

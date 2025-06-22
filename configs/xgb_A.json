@@ -1,7 +1,7 @@
 {
   "model_name"   : "xgb_A",
   "data_version" : "v5.0",
-  "feature_set"  : "medium",
+  "feature_set"  : "small",
   "params": {
     "n_estimators"      : 240,
     "max_depth"         : 6,
