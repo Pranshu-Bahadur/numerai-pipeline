@@ -1,8 +1,10 @@
-import numerapi
+import numerapi, json
 from pathlib import Path
-from .config import DATA_DIR, DATA_VERSION
 
-def download_data(cache_dir: Path | str = DATA_DIR, file_name: str = 'train') -> Path:
+DATA_DIR = Path("data"); DATA_DIR.mkdir(exist_ok=True)
+META_DIR = Path("meta"); META_DIR.mkdir(exist_ok=True)
+
+def download_data(cache_dir: Path | str = DATA_DIR, version: str = 'v5.0', file_name: str = 'train') -> Path:
     """Download Numerai parquet once, then reuse from cache."""
     cache_dir = Path(cache_dir)
     cache_dir.mkdir(exist_ok=True)
@@ -11,7 +13,16 @@ def download_data(cache_dir: Path | str = DATA_DIR, file_name: str = 'train') ->
     if dest.exists():
         return dest
 
-    api = numerapi.NumerAPI()
+    napi = numerapi.NumerAPI()
     print(f"[data] downloading → {dest}")
-    api.download_dataset(f"{DATA_VERSION}/{file_name}.parquet", str(dest))
+    napi.download_dataset(f"{version}/{file_name}.parquet", str(dest))
     return dest
+
+def get_feature_names(version: str = 'v5.0', set_name: str) -> list[str]:
+    """Return list of columns for feature-set (small|medium|large)."""
+    meta = META_DIR / f"{version}_features.json"
+    if not meta.exists():
+        napi = numerapi.NumerAPI()
+        print(f"[feature set] downloading → {meta}")
+        napi.download_dataset(f"{version}/features.json", str(meta))
+    return json.load(open(meta))["feature_sets"][set_name]
