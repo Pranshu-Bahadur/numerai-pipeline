@@ -1,7 +1,50 @@
-- name: Submit
-  env:
-    NUMERAI_PUBLIC: ${{ secrets.NUMERAI_PUBLIC }}
-    NUMERAI_SECRET: ${{ secrets.NUMERAI_SECRET }}
-    MODEL_NAME_A:   ${{ secrets.MODEL_NAME_A }}
-    MODEL_NAME_B:   ${{ secrets.MODEL_NAME_B }}
-  run: python -m src.submit
+name: Nightly Numerai Pipeline
+
+on:
+  # run on demand via the “Run workflow” button
+  workflow_dispatch:
+
+  # 02:30 UTC every day  →  about 08:00 IST
+  schedule:
+    - cron:  '30 2 * * *'
+
+jobs:
+  build-train-submit:
+    runs-on: ubuntu-latest
+
+    # prevent overlapping if a previous run is still busy
+    concurrency:
+      group: numerai-nightly
+      cancel-in-progress: false
+
+    steps:
+      - name: ⬇️  Checkout repo
+        uses: actions/checkout@v4
+
+      - name: 🐍  Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 📦  Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: ✅  Run unit tests (fast, mocked)
+        run: pytest -q
+
+      - name: 🎯  Train XGBoost models
+        run: python -m src.trainer
+
+      - name: 📦  Build Numerai model-pickles
+        run: python -m src.make_model_pickle
+
+      - name: 🚀  Submit to Numerai slots
+        env:
+          NUMERAI_PUBLIC: ${{ secrets.NUMERAI_PUBLIC }}
+          NUMERAI_SECRET: ${{ secrets.NUMERAI_SECRET }}
+          MODEL_NAME_A:   ${{ secrets.MODEL_NAME_A }}
+          MODEL_NAME_B:   ${{ secrets.MODEL_NAME_B }}
+        run: python -m src.submit
+
