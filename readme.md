@@ -74,7 +74,7 @@ Add more config files and list them in `src/trainer.py::train_all()` to train ex
 
 ---
 
-## 6 Testing
+## 5 Testing
 
 ```bash
 pytest -q          # 5 tests, all mocked, ~7 s
@@ -84,7 +84,7 @@ pytest -q          # 5 tests, all mocked, ~7 s
 
 ---
 
-## 7 Extending
+## 6 Extending
 
 * Add LightGBM / CatBoost: new configs + a small branch in `trainer.py`.
 * Hyper-parameter sweeps: plug Optuna into the trainer.
