@@ -3,3 +3,4 @@ lightgbm
 xgboost
 numpy
 pandas
+pytest
