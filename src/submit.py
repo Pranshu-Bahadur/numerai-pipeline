@@ -23,7 +23,7 @@ def submit_all() -> None:
         path = PRED_DIR / fname
         if not path.exists():
             raise FileNotFoundError(path)
-        napi.upload_predictions(str(path), model_name=slot)
+        napi.upload_predictions(str(path), model_id=slot)
         print("uploaded", path, "→", slot)
 
 if __name__ == "__main__":
