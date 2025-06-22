@@ -19,7 +19,7 @@ def build_predict_fn(model_pkl: Path, feature_cols: list[str]):
 
     def predict(live_features: pd.DataFrame,
                 live_benchmark_models: pd.DataFrame) -> pd.DataFrame:
-        cols = [c for c in live_features.columns]
+        cols = [c for c in feature_cols if c in live_features.columns]
         if len(cols) == 0:
             raise ValueError("No overlap between requested feature set and live columns")
 
