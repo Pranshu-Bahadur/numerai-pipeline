@@ -16,7 +16,7 @@ def load_cfg(path: str | Path) -> dict:
 
 def train_single(cfg_path: str | Path) -> Path:
     cfg = load_cfg(cfg_path)
-    _get_df  = lambda dataset_type: pd.read_parquet(data.download_data(cfg["data_version"], dataset_type))
+    _get_df  = lambda dataset_type: pd.read_parquet(data.download_data(version=cfg["data_version"], file_name = dataset_type))
     feats = data.get_feature_names(cfg["data_version"], cfg["feature_set"])
     df_train = _get_df('train')
     df_val   = _get_df('validation')
