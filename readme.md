@@ -61,12 +61,12 @@ python -m src.submit
 
 ## 4 · Secrets you need (once, in GitHub)
 
-| Secret name      | Where to get it                  |
-| ---------------- | -------------------------------- |
-| `NUMERAI_PUBLIC` | Numerai → Account → “API Keys”   |
-| `NUMERAI_SECRET` | Numerai → Account → “API Keys”   |
-| `MODEL_NAME_A`   | First model slot (e.g. `xgb_A`)  |
-| `MODEL_NAME_B`   | Second model slot (e.g. `xgb_B`) |
+Only the API keys are required now—model‑slot names are hard‑coded inside `src/submit.py` (`MODEL_A = "xgb_A"`, `MODEL_B = "xgb_B"`).
+
+| Secret name      | Where to get it                               |
+| ---------------- | --------------------------------------------- |
+| `NUMERAI_PUBLIC` | Numerai → Account → **API Keys** (public ID)  |
+| `NUMERAI_SECRET` | Numerai → Account → **API Keys** (secret key) |
 
 Add them under **Repo → Settings → Secrets → Actions**.
 `nightly.yml` injects them automatically:
@@ -75,9 +75,9 @@ Add them under **Repo → Settings → Secrets → Actions**.
 env:
   NUMERAI_PUBLIC: ${{ secrets.NUMERAI_PUBLIC }}
   NUMERAI_SECRET: ${{ secrets.NUMERAI_SECRET }}
-  MODEL_NAME_A:   ${{ secrets.MODEL_NAME_A }}
-  MODEL_NAME_B:   ${{ secrets.MODEL_NAME_B }}
 ```
+
+> **Note:** If you ever change the slot names in `src/submit.py`, reflect that change in Numerai’s dashboard; no extra secrets are needed.
 
 ---
 
