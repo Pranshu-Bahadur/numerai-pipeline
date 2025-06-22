@@ -7,3 +7,5 @@ pytest
 scipy
 scikit-learn
 structlog
+fastparquet
+pyarrow
