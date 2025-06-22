@@ -19,7 +19,7 @@ def train_single(cfg_path: str | Path) -> Path:
     _get_df  = lambda dataset_type: pd.read_parquet(data.download_data(version=cfg["data_version"], file_name = dataset_type))
     feats = data.get_feature_names(cfg["data_version"], cfg["feature_set"])
     df_train = _get_df('train')
-    df_val   = _get_df('validation')
+    df_val   = _get_df('validation').dropna(subset='target')
 
     X_tr, y_tr = df_train[feats], df_train["target"]
     X_val, y_val = df_val[feats], df_val["target"]
