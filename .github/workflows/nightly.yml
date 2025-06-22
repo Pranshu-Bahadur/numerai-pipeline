@@ -1,0 +1,7 @@
+- name: Submit
+  env:
+    NUMERAI_PUBLIC: ${{ secrets.NUMERAI_PUBLIC }}
+    NUMERAI_SECRET: ${{ secrets.NUMERAI_SECRET }}
+    MODEL_NAME_A:   ${{ secrets.MODEL_NAME_A }}
+    MODEL_NAME_B:   ${{ secrets.MODEL_NAME_B }}
+  run: python -m src.submit
