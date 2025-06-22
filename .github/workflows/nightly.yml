@@ -34,12 +34,6 @@ jobs:
       - name: ✅  Run unit tests (fast, mocked)
         run: pytest -q
 
-      - name: 🎯  Train XGBoost models
-        run: python -m src.trainer
-
-      - name: 📦  Build Numerai model-pickles
-        run: python -m src.make_model_pickle
-
       - name: 🚀  Submit to Numerai slots
         env:
           NUMERAI_PUBLIC: ${{ secrets.NUMERAI_PUBLIC }}
