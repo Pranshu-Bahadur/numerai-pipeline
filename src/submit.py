@@ -10,8 +10,8 @@ from pathlib import Path
 
 PRED_DIR = Path("preds")
 FILES = [
-    ("model_xgb_A.pkl", "XGBA"),
-    ("model_xgb_B.pkl", "XGBB"),
+    ("model_xgb_A.pkl", "xgba"),
+    ("model_xgb_B.pkl", "xgbb"),
 ]
 
 def submit_all() -> None:
