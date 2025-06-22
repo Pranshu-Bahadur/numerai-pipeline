@@ -15,12 +15,13 @@ FILES = [
 ]
 
 def submit_all() -> None:
-    napi = numerapi.NumerAPI(str(os.getenv("NUMERAI_PUBLIC")), str(os.getenv("NUMERAI_SECRET")))
+    napi = numerapi.NumerAPI(os.getenv("NUMERAI_PUBLIC"), os.getenv("NUMERAI_SECRET"))
     for fname, slot in FILES:
         path = PRED_DIR / fname
         if not path.exists():
             raise FileNotFoundError(path)
-        napi.upload_predictions(str(path), model_id=slot)
+        model_id = napi.get_models()[slot]
+        napi.upload_predictions(str(path), model_id=model_id)
         print("uploaded", path, "→", slot)
 
 if __name__ == "__main__":
