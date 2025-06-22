@@ -18,7 +18,7 @@ def download_data(cache_dir: Path | str = DATA_DIR, version: str = 'v5.0', file_
     napi.download_dataset(f"{version}/{file_name}.parquet", str(dest))
     return dest
 
-def get_feature_names(version: str = 'v5.0', set_name: str) -> list[str]:
+def get_feature_names(version: str = 'v5.0', set_name: str = 'small') -> list[str]:
     """Return list of columns for feature-set (small|medium|large)."""
     meta = META_DIR / f"{version}_features.json"
     if not meta.exists():
