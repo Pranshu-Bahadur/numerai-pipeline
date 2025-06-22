@@ -14,16 +14,21 @@ CFG = {
 
 
 def build_predict_fn(model_pkl: Path, feature_cols: list[str]):
+    import numpy as np, pandas as pd, joblib
     model = joblib.load(model_pkl)
 
-    def predict(
-        live_features: pd.DataFrame,
-        live_benchmark_models: pd.DataFrame,   # unused but required
-    ) -> pd.DataFrame:
-        preds = model.predict(live_features[feature_cols])
-        return pd.DataFrame({"prediction": preds}, index=live_features.index)
+    def predict(live_features: pd.DataFrame,
+                live_benchmark_models: pd.DataFrame) -> pd.DataFrame:
+        cols = [c for c in feature_cols if c in live_features.columns]
+        if len(cols) == 0:
+            raise ValueError("No overlap between requested feature set and live columns")
+
+        preds = model.predict(live_features[cols])
+        return pd.DataFrame({"prediction": preds.astype(np.float32)},
+                            index=live_features.index)
 
     return predict
+
 
 
 def main() -> None:
