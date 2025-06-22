@@ -15,10 +15,7 @@ FILES = [
 ]
 
 def submit_all() -> None:
-    napi = numerapi.NumerAPI(
-        public_id=os.getenv("NUMERAI_PUBLIC"),
-        secret_key=os.getenv("NUMERAI_SECRET"),
-    )
+    napi = numerapi.NumerAPI(os.getenv("NUMERAI_PUBLIC"),os.getenv("NUMERAI_SECRET"))
     for fname, slot in FILES:
         path = PRED_DIR / fname
         if not path.exists():
