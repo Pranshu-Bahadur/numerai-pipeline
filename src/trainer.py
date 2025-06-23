@@ -20,18 +20,19 @@ def train_single(cfg_path: str | Path) -> Path:
     _get_df  = lambda dataset_type: pd.read_parquet(data.download_data(version=cfg["data_version"], file_name = dataset_type))
     feats = data.get_feature_names(cfg["data_version"], cfg["feature_set"])
     df_train = _get_df('train')
-    df_val   = _get_df('validation').dropna(subset='target') #Numerai Validation Data Contains NaN Target Values
+    df_val   = _get_df('validation').dropna(subset='target') #Numerai Validation Data Contains NaN Target Values.
 
     X_tr, y_tr = df_train[feats], df_train["target"]
     X_val, y_val = df_val[feats], df_val["target"]
 
     model = xgb.XGBRegressor(**cfg["params"])
-    model.fit(X_tr, y_tr)
+    model.fit(X_tr, y_tr,
+              eval_set=[(X_val, y_val)], 
+              eval_metric='mae')
 
     val_pred = model.predict(X_val)
     corr, _  = spearmanr(val_pred, y_val)
     mae      = mean_absolute_error(y_val, val_pred)
-    sharpe   = float(np.mean(val_pred) / (np.std(val_pred) + 1e-12))
 
     LOG.info("train_done",
              model   = cfg["model_name"],

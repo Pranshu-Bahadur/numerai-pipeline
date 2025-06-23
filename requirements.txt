@@ -1,5 +1,4 @@
 numerapi
-lightgbm
 xgboost
 numpy
 pandas
