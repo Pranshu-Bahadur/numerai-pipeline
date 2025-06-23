@@ -26,10 +26,7 @@ def train_single(cfg_path: str | Path) -> Path:
     X_val, y_val = df_val[feats], df_val["target"]
 
     model = xgb.XGBRegressor(**cfg["params"])
-    model.fit(X_tr, y_tr,
-              eval_set=[(X_val, y_val)], 
-              eval_metric='mae')
-
+    model.fit(X_tr, y_tr)
     val_pred = model.predict(X_val)
     corr, _  = spearmanr(val_pred, y_val)
     mae      = mean_absolute_error(y_val, val_pred)
