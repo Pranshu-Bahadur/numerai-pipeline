@@ -1,5 +1,5 @@
 numerapi
-xgboost==2.1.4
+xgboost==1.7.5
 numpy
 pandas
 pytest

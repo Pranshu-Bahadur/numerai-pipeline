@@ -39,8 +39,8 @@ def train_single(cfg_path: str | Path) -> Path:
              corr    = float(corr),
              mae     = float(mae))
 
-    out = MODEL_DIR / f"{cfg['model_name']}.pkl"
-    joblib.dump(model, out)
+    out = MODEL_DIR / f"{cfg['model_name']}.json"
+    model.save_model(out)
     return out
 
 def train_all():

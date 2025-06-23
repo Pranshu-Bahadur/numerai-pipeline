@@ -1,6 +1,6 @@
 from pathlib import Path
 import cloudpickle, joblib, pandas as pd
-from src import data
+from src import data, trainer
 
 ROOT  = Path(__file__).resolve().parents[1]
 MODEL_DIR = ROOT / "models"
@@ -8,14 +8,13 @@ PRED_DIR  = ROOT / "preds"
 PRED_DIR.mkdir(exist_ok=True)
 
 CFG = {
-    "xgb_A": ("models/xgb_A.pkl", "v5.0", "small"),
-    "xgb_B": ("models/xgb_B.pkl", "v5.0", "small"),
+    "xgb_A": ("models/xgb_A.json", "v5.0", "small"),
+    "xgb_B": ("models/xgb_B.json", "v5.0", "small"),
 }
 
 
-def build_predict_fn(model_pkl: Path, feature_cols: list[str]):
-    model = joblib.load(model_pkl)
-
+def build_predict_fn(model_conf: Path, feature_cols: list[str]):
+    model = xgb.XGBRegressor().load_config(trainer.load_cfg(model_conf))
     def predict(
         live_features: pd.DataFrame,
     ) -> pd.DataFrame:
