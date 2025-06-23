@@ -1,6 +1,6 @@
-# Numerai CI-Pipeline — XGBoost (v5.0 medium)
+# Numerai Pipeline
 
-![CI](https://github.com/<your-user>/numerai-ci-pipeline/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/Pranshu-Bahadur/numerai-pipeline/actions/workflows/ci.yml/badge.svg)
 
 Lean, reproducible pipeline that
 
@@ -89,8 +89,11 @@ pytest -q          # 5 tests, all mocked, ~7 s
 * Add LightGBM / CatBoost: new configs + a small branch in `trainer.py`.
 * Hyper-parameter sweeps: plug Optuna into the trainer.
 * CSV nightly submission: re-enable `src.predict.py` + NumerAPI upload if needed.
-
+ - [ ] Run a pip freeze 
 ---
+
+
+
 
 © 2025 Pranshu Bahadur – MIT License
 PRs and issues welcome.

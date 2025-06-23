@@ -8,8 +8,8 @@ PRED_DIR  = ROOT / "preds"
 PRED_DIR.mkdir(exist_ok=True)
 
 CFG = {
-    "xgb_A": ("models/xgb_A.pkl", "v5.0", "medium"),
-    "xgb_B": ("models/xgb_B.pkl", "v5.0", "medium"),
+    "xgb_A": ("models/xgb_A.pkl", "v5.0", "small"),
+    "xgb_B": ("models/xgb_B.pkl", "v5.0", "small"),
 }
 
 
