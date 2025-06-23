@@ -1,6 +1,12 @@
-numerapi
-pandas==2.0.1
-numpy==1.24.3
-scikit-learn==1.2.2
+numerapiAdd commentMore actions
+lightgbm
 xgboost
+numpy
+pandas
+pytest
+scipy
+scikit-learn
+structlog
+fastparquet
+pyarrow
 cloudpickle==2.2.1
