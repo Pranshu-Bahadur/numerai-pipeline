@@ -27,6 +27,7 @@ def train_single(cfg_path: str | Path) -> Path:
 
     model = xgb.XGBRegressor(**cfg["params"])
     model.fit(X_tr, y_tr)
+
     val_pred = model.predict(X_val)
     corr, _  = spearmanr(val_pred, y_val)
     mae      = mean_absolute_error(y_val, val_pred)
@@ -48,3 +49,4 @@ def train_all():
 
 if __name__ == "__main__":
     train_all()
+
