@@ -1,24 +1,42 @@
-name: Daily Predict & Submit
+name: Predict & Submit on New Round
 
 on:
-  workflow_dispatch:        # manual button
+  workflow_dispatch:
   schedule:
-    - cron: '15 13 * * *'    # 13:15 UTC daily
+    - cron: '0,10,20,30,40,50 13 * * *'   # every 10 min starting 13 UTC
 
 jobs:
-  predict-submit:
+  submit:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-python@v5
-      with: { python-version: "3.11" }
-    - run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-    - name: Predict live
-      run: python -m src.predict_live
-    - name: Submit to Numerai
-      env:
-        NUMERAI_PUBLIC: ${{ secrets.NUMERAI_PUBLIC }}
-        NUMERAI_SECRET: ${{ secrets.NUMERAI_SECRET }}
-      run: python -m src.submit
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+
+      - name: Install deps
+        run: |
+          pip install -r requirements.txt
+
+      # ── NEW: exit early if no fresh round ───────────────────────────────
+      - name: Check if a new round is live
+        env:
+          NUMERAI_PUBLIC: ${{ secrets.NUMERAI_PUBLIC }}
+          NUMERAI_SECRET: ${{ secrets.NUMERAI_SECRET }}
+        run: |
+          numerapi check-new-round
+          if [ $? -ne 0 ]; then
+            echo "No new round yet – skip run."
+            exit 0
+          fi
+      # ────────────────────────────────────────────────────────────────────
+
+      - name: Predict live
+        run: python -m src.predict_live
+
+      - name: Submit predictions
+        env:
+          NUMERAI_PUBLIC:  ${{ secrets.NUMERAI_PUBLIC }}
+          NUMERAI_SECRET:  ${{ secrets.NUMERAI_SECRET }}
+        run: |
+          python -m src.submit
