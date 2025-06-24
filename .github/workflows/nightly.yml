@@ -13,7 +13,6 @@ jobs:
         uses: fkirc/skip-duplicate-actions@v5
         with:
           same_workflow: true
-          paths: []
           skip_after_successful_duplicate: 'true'
           cancel_others: 'false'
 
