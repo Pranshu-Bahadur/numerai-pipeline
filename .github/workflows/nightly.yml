@@ -1,0 +1,24 @@
+name: Daily Predict & Submit
+
+on:
+  workflow_dispatch:        # manual button
+  schedule:
+    - cron: '15 3 * * *'    # 03:15 UTC daily
+
+jobs:
+  predict-submit:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with: { python-version: "3.11" }
+    - run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Predict live
+      run: python -m src.predict_live
+    - name: Submit to Numerai
+      env:
+        NUMERAI_PUBLIC: ${{ secrets.NUMERAI_PUBLIC }}
+        NUMERAI_SECRET: ${{ secrets.NUMERAI_SECRET }}
+      run: python -m src.submit
