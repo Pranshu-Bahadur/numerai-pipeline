@@ -27,7 +27,7 @@ jobs:
           numerapi check-new-round
           if [ $? -ne 0 ]; then
             echo "No new round yet – skip run."
-            exit 78
+            exit 1
           fi
       - name: Predict live
         run: python -m src.predict_live
