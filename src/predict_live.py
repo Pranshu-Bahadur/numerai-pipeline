@@ -26,14 +26,9 @@ def _load_live(version="v5.0"):
 def predict_once(slot: str, model_file: str, feats: list[str], live: pd.DataFrame):
     model = xgb.XGBRegressor();  model.load_model(MODEL_DIR / model_file)
     preds = model.predict(live[feats])
-
-    # CSV
-    csv_path = OUT_DIR / f"predictions_{slot}.csv"
-    pd.Series(preds).to_csv(csv_path, index=False, header=False)
-
     # Parquet (optional)
     pq_path  = OUT_DIR / f"predictions_{slot}.parquet"
-    pd.DataFrame({"prediction": preds}).to_parquet(pq_path, index=False)
+    pd.DataFrame({"prediction": preds}).to_parquet(pq_path, index=live.index)
 
     return csv_path, pq_path
 
