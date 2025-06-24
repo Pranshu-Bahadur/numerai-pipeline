@@ -25,7 +25,7 @@ jobs:
           NUMERAI_SECRET: ${{ secrets.NUMERAI_SECRET }}
         run: |
           numerapi check-new-round
-          if [ $? -ne 0 ]; then
+          if [ $? -e 0 ]; then
             echo "No new round yet – skip run."
             exit 1
           fi
