@@ -2,8 +2,7 @@ name: "Predict & Submit on New Round"
 
 on:
   schedule:
-    - cron: '00,10,20,27,30,40,50 13 * * *'  # every 10 min from 13:00 UTC
-
+    - cron: '*/5 * * * * '
 jobs:
   submit:
     runs-on: ubuntu-latest
