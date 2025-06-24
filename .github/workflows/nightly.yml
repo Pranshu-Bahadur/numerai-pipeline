@@ -1,10 +1,8 @@
 name: "Predict & Submit on New Round"
-
 on:
   schedule:
-    - cron: '00,10,20,30,40,50 13,14 * * *'
+    - cron: '0,10,20,30,40,50 13,14 * * *'
   workflow_dispatch:
-
 jobs:
   submit:
     runs-on: ubuntu-latest
@@ -47,4 +45,3 @@ jobs:
           NUMERAI_PUBLIC: ${{ secrets.NUMERAI_PUBLIC }}
           NUMERAI_SECRET: ${{ secrets.NUMERAI_SECRET }}
         run: python -m src.submit
-
