@@ -30,7 +30,7 @@ def predict_once(slot: str, model_file: str, feats: list[str], live: pd.DataFram
     pq_path  = OUT_DIR / f"predictions_{slot}.parquet"
     pd.DataFrame({"prediction": preds}).to_parquet(pq_path, index=live.index)
 
-    return csv_path, pq_path
+    return pq_path
 
 def main():
     live = _load_live()
