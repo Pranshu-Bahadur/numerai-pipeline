@@ -1,9 +1,9 @@
-name: "Predict & Submit on New Round"          # ← quote because of “&”
+name: "Predict & Submit on New Round"
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: {}
   schedule:
-      - cron: '18 13 * * *'       # every 10 min starting 13 UTC
+    - cron: '0,10,20,30,40,50 13 * * *'  # every 10 min from 13:00 UTC
 
 jobs:
   submit:
@@ -26,16 +26,17 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      # ── NEW: exit early if no fresh round ───────────────────────────────
       - name: Check if a new round is live
+        id: check_round
         env:
           NUMERAI_PUBLIC: ${{ secrets.NUMERAI_PUBLIC }}
           NUMERAI_SECRET: ${{ secrets.NUMERAI_SECRET }}
         run: |
-          numerapi check-new-round
-          if [ $? -ne 1 ]; then
+          ROUND=$(numerapi check-new-round)
+          echo ">>> numerapi check-new-round returned: $ROUND"
+          if [ "$ROUND" == 0 ]; then
             echo "No new round yet – skipping."
-            exit 78                      # tell GH-Actions “neutral / skipped”
+            exit 78
           fi
 
       - name: Predict live
