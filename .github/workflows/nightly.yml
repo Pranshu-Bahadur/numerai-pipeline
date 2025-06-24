@@ -32,15 +32,10 @@ jobs:
           NUMERAI_PUBLIC: ${{ secrets.NUMERAI_PUBLIC }}
           NUMERAI_SECRET: ${{ secrets.NUMERAI_SECRET }}
         run: |
-
           numerapi check-new-round
-
           if [ $? -ne 1 ]; then
-
             echo "No new round yet – skip run."
-
             exit 78
-
           fi 
 
       - name: Predict live
