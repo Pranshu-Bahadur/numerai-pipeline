@@ -32,7 +32,6 @@ def predict_once(slot: str, model_file: str, feats: list[str], live: pd.DataFram
         "id": live.index,
         "prediction": preds
         })
-    print(df.columns)
     df.to_parquet(pq_path, index=False)
 
     return pq_path
