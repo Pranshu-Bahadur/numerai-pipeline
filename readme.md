@@ -2,13 +2,14 @@
 
 ![CI](https://github.com/Pranshu-Bahadur/numerai-pipeline/actions/workflows/ci.yml/badge.svg)
 
-Lean, reproducible pipeline that
+Lean, reproducible workflow that  
 
-1. trains two preset XGBoost models on the **train** slice of Numerai v5.0  
-2. evaluates on the official **validation** slice (corr / MAE / Sharpe)  
-3. wraps each model in a cloud-pickled `predict()` callable expected by Numerai  
+1. trains **two** preset XGBoost models on the **train** slice of Numerai v5.0  
+2. evaluates on the official **validation** slice (Spearman corr / MAE / Sharpe)  
+3. wraps each model in a Numerai-compliant cloud-pickled `predict()` callable  
 
-> **Important:** Numerai’s “model-upload” endpoint is *UI-only*.  
+> **Note:** Numerai’s model-upload is UI-only, so the generated `model_xgb_*.pkl`
+> files must be uploaded manually in the dashboard.
 
 ---
 
@@ -18,83 +19,78 @@ Lean, reproducible pipeline that
 
 .
 ├─ src/
-│   ├─ data.py               # download parquet + feature sets
-│   ├─ trainer.py            # trains xgb\_A / xgb\_B
-│   ├─ inference.py  # wraps & cloud-pickles predict()
+│   ├─ data.py            # parquet + feature-list helpers
+│   ├─ trainer.py         # trains xgb\_A / xgb\_B → models/\*.json
+│   ├─ inference.py       # builds & cloud-pickles predict()
 │   └─ **init**.py
-├─ configs/                  # hyper-param JSONs
-├─ models/   (generated)     # trained XGB pickles
-├─ preds/    (generated)     # model\_xgb\_A.pkl / model\_xgb\_B.pkl
-├─ tests/                    # mocked fast unit tests
+├─ configs/               # hyper-param JSONs
+├─ models/   (generated)  # XGBoost JSON models
+├─ preds/    (generated)  # model\_xgb\_A.pkl / model\_xgb\_B.pkl
+├─ tests/                 # fast unit tests (mocked + live smoke)
 └─ .github/workflows/
-	├─ ci.yml                # push/PR – fast tests only
+└─ ci.yml             # push / PR → run tests
 
 ````
 
 ---
 
-## 2 Quick-start locally
+## 2 Quick-start (local)
 
 ```bash
-git clone https://github.com/<user>/numerai-ci-pipeline.git
-cd numerai-ci-pipeline
+git clone https://github.com/<user>/numerai-pipeline.git
+cd numerai-pipeline
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 
-# train two models (~3-5 min CPU)
+# 1) train the two models (~3 – 5 min CPU)
 python -m src.trainer
 
-# build Numerai-compatible pickles
-python -m src.inference.py     # outputs preds/model_xgb_*.pkl
+# 2) build Numerai-compatible pickles
+python -m src.inference       # → preds/model_xgb_A.pkl, model_xgb_B.pkl
 ````
 
 ---
 
-## 3 Uploading the models to Numerai
+## 3 Upload to Numerai
 
-1. Unzip `numerai-models.zip` – you’ll get
-   `model_xgb_A.pkl`, `model_xgb_B.pkl`.
-2. Numerai dashboard → **Models** → **Upload Model** for each slot.
-3. Assign filenames to their corresponding slots (e.g., `xgb_A`, `xgb_B`).
-4. Numerai will now call your `predict()` function automatically on future rounds.
+1. Locate `preds/model_xgb_A.pkl` and `model_xgb_B.pkl`.
+2. Numerai **Dashboard → Models → Upload Model** (one per slot).
+3. Map each file to its slot name (`xgb_A`, `xgb_B`, …).
+4. Numerai will call your `predict()` automatically on live rounds.
 
-*(No secret keys are required for this manual upload.)*
+*(No API keys needed for this manual step.)*
 
 ---
 
 ## 4 Config knobs
 
-| Field in `configs/xgb_*.json` | Meaning                                    |
-| ----------------------------- | ------------------------------------------ |
-| `data_version`                | `"v5.0"` (change to `"v4"` etc. if needed) |
-| `feature_set`                 | `"small"`, `"medium"`, `"large"`           |
-| `params`                      | Passed directly to `xgboost.XGBRegressor`  |
+| Field (in `configs/xgb_*.json`) | Purpose                                   |
+| ------------------------------- | ----------------------------------------- |
+| `data_version`                  | `"v5.0"` (or `"v4"`, etc.)                |
+| `feature_set`                   | `"small"`, `"medium"`, `"large"`          |
+| `params`                        | Passed straight to `xgboost.XGBRegressor` |
 
-Add more config files and list them in `src/trainer.py::train_all()` to train extra models.
+Add new configs and list them in `trainer.py::train_all()` to train more models.
 
 ---
 
 ## 5 Testing
 
 ```bash
-pytest -q          # 5 tests, all mocked, ~7 s
+pytest -q      # mocked unit tests + one live-parquet smoke test
 ```
 
-*No large downloads in CI—the trainer is monkey-patched to use a tiny DataFrame.*
+*CI uses monkey-patched data, so the push/PR run finishes in ≈ 7 s.*
 
 ---
 
 ## 6 Extending
 
-* Add LightGBM / CatBoost: new configs + a small branch in `trainer.py`.
-* Hyper-parameter sweeps: plug Optuna into the trainer.
-* CSV nightly submission: re-enable `src.predict.py` + NumerAPI upload if needed.
- - [ ] Run a pip freeze 
+* LightGBM or CatBoost → add configs + a small branch in `trainer.py`.
+* Hyper-parameter sweeps → plug Optuna into the trainer.
+* CSV nightly submission → re-enable `src.predict.py` and NumerAPI upload.
+
 ---
 
-
-
-
-© 2025 Pranshu Bahadur – MIT License
-PRs and issues welcome.
+© 2025 Pranshu Bahadur — MIT License. PRs and issues welcome!
 
