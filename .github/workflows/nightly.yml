@@ -1,7 +1,6 @@
 name: "Predict & Submit on New Round"
 
 on:
-  workflow_dispatch: {}
   schedule:
     - cron: '0,10,20,30,40,50 13 * * *'  # every 10 min from 13:00 UTC
 
