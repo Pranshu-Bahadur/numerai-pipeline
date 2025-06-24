@@ -28,7 +28,12 @@ def predict_once(slot: str, model_file: str, feats: list[str], live: pd.DataFram
     preds = model.predict(live[feats])
     # Parquet (optional)
     pq_path  = OUT_DIR / f"predictions_{slot}.parquet"
-    pd.DataFrame({"prediction": preds}).to_parquet(pq_path, index=live.index)
+    df = pd.DataFrame({
+        "id": live.index,
+        "prediction": preds
+        })
+    print(df.columns)
+    df.to_parquet(pq_path, index=False)
 
     return pq_path
 

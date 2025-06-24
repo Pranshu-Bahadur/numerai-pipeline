@@ -7,7 +7,7 @@ from pathlib import Path
 
 OUT_DIR = Path("out")
 FILES = [
-    ("predictions_xgba.parquet", "xgba"),   # secrets
+    ("predictions_xgba.parquet", "xgba"),
     ("predictions_xgbb.parquet", "xgbb"),
 ]
 
