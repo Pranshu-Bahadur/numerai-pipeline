@@ -2,7 +2,9 @@ name: "Predict & Submit on New Round"
 
 on:
   schedule:
-    - cron: '*/5 * * * * '
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
 jobs:
   submit:
     runs-on: ubuntu-latest
