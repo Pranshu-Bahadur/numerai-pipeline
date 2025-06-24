@@ -29,6 +29,6 @@ def test_full_predict_live():
     for slot in ("xgba", "xgbb"):
         csv_path = out_dir / f"predictions_{slot}.parquet"
         assert csv_path.exists()
-        preds = pd.read_parquet(csv_path, header=None)
-        assert len(preds) == len(live)
+        preds = pd.read_parquet(csv_path)
+        assert len(preds.id) == len(live.index)
 
