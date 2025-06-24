@@ -6,8 +6,8 @@ ROOT      = Path(__file__).resolve().parents[1]
 PRED_DIR  = ROOT / "preds";   PRED_DIR.mkdir(exist_ok=True)
 
 CFG = {
-    "xgb_A": ("models/xgb_A.json", "v5.0", "medium"),
-    "xgb_B": ("models/xgb_B.json", "v5.0", "medium"),
+    "xgb_A": ("models/xgb_A.json", "v5.0", "small"),
+    "xgb_B": ("models/xgb_B.json", "v5.0", "small"),
 }
 
 
