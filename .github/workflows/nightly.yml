@@ -3,16 +3,25 @@ name: Predict & Submit on New Round
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0,10,20,30,40,50 13 * * *'   # every 10 min starting 13 UTC
+    - cron: '0,10,20,30,40,50 13 * * *'  # every 10 min starting 13 UTC
 
 jobs:
   submit:
     runs-on: ubuntu-latest
     steps:
+      - name: Skip duplicate runs
+        uses: fkirc/skip-duplicate-actions@v5
+        with:
+          same_workflow: true
+          paths: []
+          skip_after_successful_duplicate: 'true'
+          cancel_others: 'false'
+
       - uses: actions/checkout@v4
 
       - uses: actions/setup-python@v5
-        with: { python-version: '3.11' }
+        with:
+          python-version: '3.11'
 
       - name: Install deps
         run: |
@@ -24,11 +33,11 @@ jobs:
           NUMERAI_PUBLIC: ${{ secrets.NUMERAI_PUBLIC }}
           NUMERAI_SECRET: ${{ secrets.NUMERAI_SECRET }}
         run: |
-          numerapi check-new-round
-          if [ $? -ne 1 ]; then
+          if ! numerapi check-new-round; then
             echo "No new round yet – skip run."
             exit 78
           fi
+
       - name: Predict live
         run: python -m src.predict_live
 
