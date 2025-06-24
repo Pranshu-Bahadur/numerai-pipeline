@@ -7,8 +7,8 @@ from pathlib import Path
 
 OUT_DIR = Path("out")
 FILES = [
-    ("predictions_xgba.csv", "xgba"),   # secrets
-    ("predictions_xgbb.csv", "xgbb"),
+    ("predictions_xgba.parquet", "xgba"),   # secrets
+    ("predictions_xgbb.parquet", "xgbb"),
 ]
 
 def main():

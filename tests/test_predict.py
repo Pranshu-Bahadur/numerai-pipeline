@@ -27,8 +27,8 @@ def test_full_predict_live():
     predict_live.main()  # this will generate predictions_xgba.csv / xgbb.csv
 
     for slot in ("xgba", "xgbb"):
-        csv_path = out_dir / f"predictions_{slot}.csv"
+        csv_path = out_dir / f"predictions_{slot}.parquet"
         assert csv_path.exists()
-        preds = pd.read_csv(csv_path, header=None)
+        preds = pd.read_parquet(csv_path, header=None)
         assert len(preds) == len(live)
 
