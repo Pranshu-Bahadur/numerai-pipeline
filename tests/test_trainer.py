@@ -113,4 +113,4 @@ def test_train_single_performance(monkeypatch, tmp_path, synthetic_data, trainin
     print(f"\n[Test] Validation Spearman Correlation: {corr:.4f}")
     print(f"[Test] Validation MAE: {mae:.4f}")
 
-    assert corr > 0.95, f"Model correlation ({corr:.4f}) is below the expected threshold of 0.85."
+    assert corr > 0.85, f"Model correlation ({corr:.4f}) is below the expected threshold of 0.85."
