@@ -29,7 +29,7 @@ Lean, reproducible workflow that
 │   └─ **init**.py
 ├─ configs/                # hyper-param JSONs
 ├─ models/   (generated)   # XGBoost JSON models
-├─ preds/    (generated)   # model\_xgb\_A.json / model\_xgb\_B.json
+├─ preds/    (generated)   # model\_xgb\_A.pkl / model\_xgb\_B.pkl
 ├─ out/      (generated)   # predictions\_xgba.parquet / predictions\_xgbb.parquet
 ├─ tests/                  # fast unit tests (mocked + smoke)
 └─ .github/workflows/
