@@ -14,7 +14,7 @@ napi   = numerapi.NumerAPI()
 start  = dt.datetime.utcnow()
 
 while (dt.datetime.utcnow() - start).total_seconds() < MAX_HOURS * 3600:
-    if napi.check_round_open():          # ✅  confirmed existing in numerapi 0.6+
+    if napi.check_round_open():          
         print("Live data ready – continue workflow.")
         sys.exit(0)
     print(dt.datetime.utcnow(), "Live data not ready; sleep", POLL_SEC)
