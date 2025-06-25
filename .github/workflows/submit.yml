@@ -1,0 +1,38 @@
+name: Predict & Submit (wait–then–run)
+
+on:
+  schedule:
+    - cron: '0 13 * * *'          # start at 13:00 UTC daily
+  workflow_dispatch:
+
+jobs:
+  numerai:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360          # safety guard
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+
+      - name: Install deps
+        run: pip install -r requirements.txt numerapi tenacity
+
+      # ── Step 1: watch until live data ready ───────────────────────────
+      - name: Wait for live round
+        id: wait
+        run: python -m src.watch
+
+      # ── Step 2: predict (runs only if previous succeeded) ────────────
+      - name: Predict live
+        if: steps.wait.outcome == 'success'
+        run: python -m src.predict_live
+
+      # ── Step 3: submit ───────────────────────────────────────────────
+      - name: Submit predictions
+        if: steps.wait.outcome == 'success'
+        env:
+          NUMERAI_PUBLIC:  ${{ secrets.NUMERAI_PUBLIC }}
+          NUMERAI_SECRET:  ${{ secrets.NUMERAI_SECRET }}
+        run: python -m src.submit
+
