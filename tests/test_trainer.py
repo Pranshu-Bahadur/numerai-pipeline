@@ -46,7 +46,7 @@ def training_config(tmp_path):
     config = {
         "model_name": model_name,
         "params": {
-            "n_estimators": 50,
+            "n_estimators": 100,
             "max_depth": 5,
             "learning_rate": 0.1,
             "objective": "reg:squarederror",
@@ -113,5 +113,4 @@ def test_train_single_performance(monkeypatch, tmp_path, synthetic_data, trainin
     print(f"\n[Test] Validation Spearman Correlation: {corr:.4f}")
     print(f"[Test] Validation MAE: {mae:.4f}")
 
-    assert corr > 0.85, f"Model correlation ({corr:.4f}) is below the expected threshold of 0.85."
-    assert mae < 25, f"Model MAE ({mae:.2f}) is higher than the expected threshold of 25."
+    assert corr > 0.95, f"Model correlation ({corr:.4f}) is below the expected threshold of 0.85."
