@@ -48,7 +48,7 @@ Deadline : **30 June, 2025**.
 
 | Metric | Value |
 |--------|-------|
-| First automated submission | **24 Jun 2025 14 : 10 UTC** (WF Started @13UTC) |
+| First automated submission | **25 Jun 2025 14 : 10 UTC** (WF Started @13UTC) |
 | CI pipeline time | **~1m** |
 | Manual effort after setup | **Zero**|
 
