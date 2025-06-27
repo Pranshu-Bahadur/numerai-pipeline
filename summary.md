@@ -24,7 +24,7 @@ Deadline : **30 June, 2025**.
 
 ### Architecture
 
-<img src="flowchart.png" width="50%">
+<img src="flowchart.png" width="25%">
 
 1. **GitHub Actions** starts at **13 : 00 UTC**.  
 2. **`watch.py`** polls Numerai every 10 min (max 5 h) → exits early if no new round.  
