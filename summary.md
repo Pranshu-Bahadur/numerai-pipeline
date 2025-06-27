@@ -48,9 +48,8 @@ Deadline : **30 June, 2025**.
 
 | Metric | Value |
 |--------|-------|
-| First automated submission | **24 Jun 2025 13 : 08 UTC** |
-| Live round runtime | **8 m 11 s** |
-| CI pipeline time | **7 s** |
+| First automated submission | **24 Jun 2025 14 : 10 UTC** (WF Started @13UTC) |
+| CI pipeline time | **~1m** |
 | Manual effort after setup | **Zero**|
 
 The desk now has a **minimal, test-covered that can be extended with new models (WarpGBM, LightGBM) by adding a config and minimal changes to pipeline.
