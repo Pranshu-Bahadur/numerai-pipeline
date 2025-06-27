@@ -38,7 +38,7 @@ Deadline : **30 June, 2025**.
 |------|----------------|
 | **Modelling** | Two fixed XGBoost configs (`xgba`, `xgbb`) saved in `models/*.json`, can be wrapped with cloud-pickled `predict()` callables using `inference.py`. |
 | **Data helpers** | `src/data.py` fetches v5.0 parquet & feature lists, schema-validated. |
-| **CI** | PyTest suite (mocked + live smoke) green in ~7 s on every push. |
+| **CI** | PyTest suite (mocked + live smoke) green in ~1m on every push. |
 | **Secrets** | `NUMERAI_PUBLIC`, `NUMERAI_SECRET` documented and referenced in workflow. |
 | **Resilience** | Tenacity back-off on downloads / uploads; max-hours guard to stay within GitHub runner limit. |
 
