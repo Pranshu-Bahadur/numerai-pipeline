@@ -21,15 +21,15 @@ def train_single(cfg_path: str | Path, df_tr : pd.DataFrame, df_va : pd.DataFram
     cfg = load_cfg(cfg_path)
     if not feats:
         feats = [c for c in df_tr.columns if c.startswith('feature')]
-    X_tr, y_tr, eras_tr = df_tr[feats], df_tr["target"], df_tr["eras"]
-    X_va, y_va, eras_va = df_va[feats], df_va["target"], df_va["eras"]
+    X_tr, y_tr, eras_tr = df_tr[feats], df_tr["target"], df_tr["era"]
+    X_va, y_va, eras_va = df_va[feats], df_va["target"], df_va["era"]
 
     model = xgb.XGBRegressor(**cfg["params"])
     model.fit(X_tr, y_tr)
 
     preds   = model.predict(X_va)
     df_val = pd.DataFrame(
-        {"preds": preds, "target": y_va.values, "eras": eras_va.values}
+        {"preds": preds, "target": y_va.values, "era": eras_va.values}
     )
 
     def _era_metrics(era_df: pd.DataFrame) -> tuple[float, float]:
@@ -37,7 +37,7 @@ def train_single(cfg_path: str | Path, df_tr : pd.DataFrame, df_va : pd.DataFram
         mae = mean_absolute_error(era_df["target"], era_df["preds"])
         return corr, mae
 
-    era_stats = df_val.groupby("eras").apply(_era_metrics).tolist()
+    era_stats = df_val.groupby("era").apply(_era_metrics).tolist()
     era_corrs, era_maes = zip(*era_stats) 
 
     corr_mean = float(np.mean(era_corrs))

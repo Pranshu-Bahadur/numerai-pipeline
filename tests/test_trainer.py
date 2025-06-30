@@ -26,7 +26,7 @@ def synthetic_data():
     feature_names = [f'feature_{i}' for i in range(X.shape[1])]
     df = pd.DataFrame(X, columns=feature_names)
     df['target'] = y
-    df['eras'] = np.ones_like(y)
+    df['era'] = np.ones_like(y)
     
     df_train, df_validation = train_test_split(df, test_size=0.3, random_state=42)
     
@@ -105,6 +105,7 @@ def test_train_single_performance(monkeypatch, tmp_path, synthetic_data, trainin
     model = xgb.XGBRegressor()
     model.load_model(output_model_path)
 
+    #@Todo this part is redundant - I need to just fetch log.info from train_single
     X_va = df_va[feats]
     y_va = df_va["target"]
     predictions = model.predict(X_va)
