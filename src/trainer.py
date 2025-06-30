@@ -20,7 +20,7 @@ def load_cfg(path: str | Path) -> dict:
 def train_single(cfg_path: str | Path, df_tr : pd.DataFrame, df_va : pd.DataFrame, feats : list = None) -> Path:
     cfg = load_cfg(cfg_path)
     if not feats:
-        feats = [c for c in df_tr.columns if c != 'target']
+        feats = [c for c in df_tr.columns if c.startswith('feature')]
     X_tr, y_tr = df_tr[feats], df_tr["target"]
     X_va, y_va = df_va[feats], df_va["target"]
 
