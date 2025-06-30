@@ -24,9 +24,9 @@ def synthetic_data():
         random_state=42
     )
     feature_names = [f'feature_{i}' for i in range(X.shape[1])]
-    
     df = pd.DataFrame(X, columns=feature_names)
     df['target'] = y
+    df['eras'] = np.ones_like(y)
     
     df_train, df_validation = train_test_split(df, test_size=0.3, random_state=42)
     
@@ -84,6 +84,8 @@ def test_train_single_performance(monkeypatch, tmp_path, synthetic_data, trainin
     1. Trains a model without errors.
     2. Saves the trained model to the correct path.
     3. The resulting model achieves a good performance score on the validation data.
+
+    Note: Eras-wise metrics are not calculated because test data is synthetic and thus test dataset's eras are spurious.
     """
 
     monkeypatch.setattr(training_script, 'MODEL_DIR', tmp_path)
